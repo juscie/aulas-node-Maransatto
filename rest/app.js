@@ -10,6 +10,26 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); //aceitar apenas dados simples
 app.use(bodyParser.json()); //aceitar JSON de entrada no body
 
+
+app.use((req, es, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'access-Control-Allow-Header',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).send({
+      ok: 'ok'
+    });
+  }
+
+  next();
+});
+
+
+
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 
